@@ -1,0 +1,77 @@
+# =========================
+# Build folders
+# =========================
+bin/
+obj/
+
+# =========================
+# User-specific files
+# =========================
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# =========================
+# Rider / VS Code / VS
+# =========================
+.vscode/
+.idea/
+.vs/
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# ASP.NET Core settings
+# =========================
+appsettings.Development.json
+appsettings.Production.json
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+
+# =========================
+# NuGet
+# =========================
+*.nupkg
+packages/
+
+# =========================
+# Test results
+# =========================
+TestResults/
+coverage/
+
+# =========================
+# Publish output
+# =========================
+publish/
+
+# =========================
+# OS generated files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Secrets
+# =========================
+secrets.json
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp
+
+# =========================
+# Node modules (if frontend added later)
+# =========================
+node_modules/
