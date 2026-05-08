@@ -23,7 +23,7 @@ public class ProvinceRepository : IProvinceRepository
         try
         {
             using var connection = new SqlConnection(_connectionString);
-            var sql = "SELECT * FROM pms010";
+            var sql = "SELECT * FROM Province";
             var provinces = await connection.QueryAsync<Province>(sql);
             return provinces.ToList();
         }

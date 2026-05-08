@@ -23,7 +23,7 @@ public class ProductRepository : IProductRepository
         try
         {
             using var connection = new SqlConnection(_connectionString);
-            var sql = "SELECT * FROM products";
+            var sql = "SELECT * FROM Product";
             var products = await connection.QueryAsync<Product>(sql);
             return products.ToList();
         }

@@ -21,7 +21,7 @@ public class DistrictRepository : IDistrictRepository
         try
         {
             using var connection = new SqlConnection(_connectionString);
-            var sql = "SELECT * FROM pms011";
+            var sql = "SELECT * FROM District";
             var districts = await connection.QueryAsync<District>(sql);
             return districts.ToList();
         }
