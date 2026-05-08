@@ -1,3 +1,5 @@
+namespace ProductCatalogApi.Models.Entities;
+
 public class Province
 {
     public string PrvID { get; set; } = "";

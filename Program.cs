@@ -10,14 +10,18 @@ try
     builder.ConfigureSerilog();
 
     // Add services to the container
-    builder.Services.AddControllersWithViews();
+    builder.Services.AddControllers();
     builder.Services.AddApplicationServices(builder.Configuration);
     builder.Services.AddSwaggerConfiguration();
+    builder.Services.AddJwtAuthentication(builder.Configuration);
+    builder.Services.AddValidationConfiguration();
+    builder.Services.AddHealthCheckConfiguration(builder.Configuration);
 
     var app = builder.Build();
 
     // Use error handling middleware
     app.UseErrorHandling();
+    app.UseApiKey();
 
     // Configure the HTTP request pipeline
     app.UseSwaggerConfiguration();
@@ -28,23 +32,38 @@ try
     }
 
     app.UseHttpsRedirection();
-    app.UseStaticFiles();
     app.UseCors("AllowAll");
-    app.UseRouting();
+    
+    // Add authentication middleware
+    app.UseAuthentication();
     app.UseAuthorization();
-
-    // Map MVC controller route
-    app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
+    
+    app.UseRouting();
 
     // Health check database connection
     app.UseHealthCheck();
+    app.UseHealthCheckConfiguration();
 
     // Map API endpoints
     app.MapProductEndpoints();
     app.MapProvinceEndpoints();
     app.MapDistrictEndpoints();
+
+    // Fallback for 404 Not Found
+    app.Use(async (context, next) =>
+    {
+        await next();
+
+        if (context.Response.StatusCode == StatusCodes.Status404NotFound && !context.Response.HasStarted)
+        {
+            context.Response.ContentType = "application/json";
+            var response = ProductCatalogApi.DTOs.ApiResponse<object>.ErrorResponse(
+                "The requested endpoint was not found.", 
+                statusCode: StatusCodes.Status404NotFound);
+            
+            await context.Response.WriteAsJsonAsync(response);
+        }
+    });
 
     app.Run();
 }
@@ -56,5 +75,6 @@ finally
 {
     Serilog.Log.CloseAndFlush();
 }
+
 
 

@@ -1,3 +1,8 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using ProductCatalogApi.Interfaces.Repositories;
+using ProductCatalogApi.Interfaces.Services;
 using ProductCatalogApi.Repositories;
 using ProductCatalogApi.Services;
 
@@ -35,7 +40,9 @@ public static class ServiceCollectionExtensions
             new DistrictRepository(connectionString!, sp.GetRequiredService<ILogger<DistrictRepository>>()));
 
         // Register services
-        services.AddScoped<IDataService, DataService>();
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IProvinceService, ProvinceService>();
+        services.AddScoped<IDistrictService, DistrictService>();
 
         return services;
     }

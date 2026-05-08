@@ -1,3 +1,5 @@
+namespace ProductCatalogApi.Models.Entities;
+
 public class District
 {
     public string AmpID { get; set; } = "";

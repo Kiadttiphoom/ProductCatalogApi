@@ -33,6 +33,32 @@ public static class SwaggerExtensions
                 Version = "v1.0",
                 Description = "REST API for managing products, provinces, and districts"
             });
+
+            // Add API Key support
+            options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+            {
+                Description = "API Key needed to access the endpoints. X-API-KEY: Your_Key",
+                In = ParameterLocation.Header,
+                Name = "X-API-KEY",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "ApiKeyScheme"
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "ApiKey"
+                        },
+                        In = ParameterLocation.Header
+                    },
+                    new List<string>()
+                }
+            });
         });
 
         return services;

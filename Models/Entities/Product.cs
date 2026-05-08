@@ -1,3 +1,5 @@
+namespace ProductCatalogApi.Models.Entities;
+
 public class Product
 {
     public string BrandID { get; set; } = "";

@@ -3,6 +3,14 @@
 # =========================
 bin/
 obj/
+publish/
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+build_output.txt
 
 # =========================
 # User-specific files
@@ -13,29 +21,35 @@ obj/
 *.sln.docstates
 
 # =========================
-# Rider / VS Code / VS
+# IDE folders
 # =========================
 .vscode/
 .idea/
 .vs/
 
 # =========================
-# Logs
-# =========================
-logs/
-*.log
-
-# =========================
-# ASP.NET Core settings
+# ASP.NET Core configs
 # =========================
 appsettings.Development.json
 appsettings.Production.json
+appsettings.Local.json
 
 # =========================
-# Environment variables
+# Environment files
 # =========================
 .env
 .env.*
+
+# =========================
+# Secrets
+# =========================
+secrets.json
+
+# =========================
+# Test output
+# =========================
+TestResults/
+coverage/
 
 # =========================
 # NuGet
@@ -44,34 +58,18 @@ appsettings.Production.json
 packages/
 
 # =========================
-# Test results
-# =========================
-TestResults/
-coverage/
-
-# =========================
-# Publish output
-# =========================
-publish/
-
-# =========================
-# OS generated files
-# =========================
-.DS_Store
-Thumbs.db
-
-# =========================
-# Secrets
-# =========================
-secrets.json
-
-# =========================
-# Temporary files
+# Temp files
 # =========================
 *.tmp
 *.temp
 
 # =========================
-# Node modules (if frontend added later)
+# OS generated
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Node.js
 # =========================
 node_modules/

@@ -1,7 +1,7 @@
 using Asp.Versioning;
 using ProductCatalogApi.DTOs;
-using ProductCatalogApi.Models;
-using ProductCatalogApi.Services;
+using ProductCatalogApi.Interfaces.Services;
+using ProductCatalogApi.Models.Entities;
 
 namespace ProductCatalogApi.Routes;
 
@@ -19,9 +19,9 @@ public static class ProvinceRoutes
         return app;
     }
 
-    private static async Task<IResult> GetProvinces(IDataService dataService)
+    private static async Task<IResult> GetProvinces(IProvinceService provinceService)
     {
-        var result = await dataService.GetProvincesAsync();
-        return result.Success ? Results.Ok(result) : Results.StatusCode(StatusCodes.Status500InternalServerError);
+        var result = await provinceService.GetProvincesAsync();
+        return result.Success ? Results.Ok(result) : Results.Json(result, statusCode: result.StatusCode);
     }
 }

@@ -1,7 +1,7 @@
 using Asp.Versioning;
 using ProductCatalogApi.DTOs;
-using ProductCatalogApi.Models;
-using ProductCatalogApi.Services;
+using ProductCatalogApi.Interfaces.Services;
+using ProductCatalogApi.Models.Entities;
 
 namespace ProductCatalogApi.Routes;
 
@@ -20,9 +20,9 @@ public static class ProductRoutes
         return app;
     }
 
-    private static async Task<IResult> GetProducts(IDataService dataService)
+    private static async Task<IResult> GetProducts(IProductService productService)
     {
-        var result = await dataService.GetProductsAsync();
-        return result.Success ? Results.Ok(result) : Results.StatusCode(StatusCodes.Status500InternalServerError);
+        var result = await productService.GetProductsAsync();
+        return result.Success ? Results.Ok(result) : Results.Json(result, statusCode: result.StatusCode);
     }
 }

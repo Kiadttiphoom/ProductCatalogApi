@@ -47,17 +47,38 @@ A comprehensive REST API for managing products, provinces, and districts with en
 
 ## Features
 
+### � JWT Authentication
+- Token-based authentication for API endpoints
+- Configurable expiration time
+- Secure token validation with HMAC SHA256
+- Bearer token support
+- **Package**: `System.IdentityModel.Tokens.Jwt v8.16.0`
+
 ### 📚 Swagger/OpenAPI Documentation
 - Interactive API documentation at `http://localhost:5000/`
 - Full endpoint descriptions with request/response schemas
 - Try-it-out functionality for instant testing
-- **Package**: `Swashbuckle.AspNetCore v6.4.10`
+- **Package**: `Swashbuckle.AspNetCore v6.5.0`
+
+### ✅ FluentValidation
+- Comprehensive input validation for all DTOs
+- Custom validation rules for Product, Province, and District
+- Automatic validation in request pipeline
+- Detailed error messages
+- **Package**: `FluentValidation v11.9.2`
 
 ### 📝 Structured Logging
 - Professional logging with Serilog integration
 - Dual output: Console + File (daily rolling)
 - Correlation ID support for distributed tracing
 - **Package**: `Serilog.AspNetCore v8.0.1`
+
+### ❤️ Health Checks
+- API health endpoint at `/health`
+- Database connectivity checks
+- JSON response format for monitoring
+- Integration with monitoring systems
+- **Package**: `Microsoft.Extensions.Diagnostics.HealthChecks v8.0.8`
 
 ### ✓ Input Validation & Query Parameters
 - Advanced product filtering:
@@ -76,28 +97,60 @@ A comprehensive REST API for managing products, provinces, and districts with en
 - Easy migration path to v2
 - **Package**: `Asp.Versioning.Mvc.ApiExplorer v8.1.0`
 
-### 🏗️ Clean Architecture
+### 🏗️ Clean Architecture with Dependency Injection
 
 ```
 ProductCatalogApi/
-├── Controllers/              # API Controllers
-├── DTOs/                     # Data Transfer Objects
-│   ├── ApiResponse.cs
-│   ├── PaginationQuery.cs
-│   └── ProductQuery.cs
+├── Interfaces/               # Abstraction Layer
+│   ├── Repositories/
+│   │   ├── IProductRepository.cs
+│   │   ├── IProvinceRepository.cs
+│   │   └── IDistrictRepository.cs
+│   └── Services/
+│       ├── IProductService.cs
+│       ├── IProvinceService.cs
+│       └── IDistrictService.cs
 ├── Repositories/             # Data Access Layer
-│   ├── IRepository.cs
-│   └── Repository.cs
+│   ├── ProductRepository.cs
+│   ├── ProvinceRepository.cs
+│   └── DistrictRepository.cs
 ├── Services/                 # Business Logic Layer
-│   └── DataService.cs
-├── Models/                   # Entity Models
-└── ProductCatalogApi.Tests/  # Unit & Integration Tests
+│   ├── ProductService.cs
+│   ├── ProvinceService.cs
+│   └── DistrictService.cs
+├── Authentication/           # JWT Token Service
+│   ├── JwtService.cs
+│   ├── JwtSettings.cs
+│   └── IJwtService.cs
+├── HealthChecks/            # Health Check Implementation
+│   ├── DatabaseHealthCheck.cs
+│   └── ApiHealthCheck.cs
+├── Validators/              # FluentValidation Rules
+│   ├── ProductValidator.cs
+│   ├── ProvinceValidator.cs
+│   └── DistrictValidator.cs
+├── Extensions/              # Dependency Injection Configuration
+│   ├── ServiceCollectionExtensions.cs
+│   ├── AuthenticationExtensions.cs
+│   ├── ValidationExtensions.cs
+│   └── HealthCheckExtensions.cs
+├── Models/                  # Entity Models
+├── DTOs/                    # Data Transfer Objects
+├── Controllers/             # API Controllers
+└── Routes/                  # Minimal API Routes
+    ├── ProductRoutes.cs
+    ├── ProvinceRoutes.cs
+    └── DistrictRoutes.cs
 ```
 
 ### 🧪 Comprehensive Testing
-- Unit tests for DataService
-- Pagination query validation tests
-- API response DTOs tests
+- Unit tests with xUnit
+- Mock objects with Moq
+- Fluent Assertions for readable test code
+- Service layer tests
+- Authentication tests
+- Validator tests
+- **Packages**: `xunit v2.7.1`, `Moq v4.20.70`, `FluentAssertions v6.12.0`
 - Mock repositories for isolation
 - **Packages**: `xUnit v2.7.1`, `Moq v4.20.70`
 
@@ -306,11 +359,64 @@ If the connection fails:
 
 ---
 
+## CI/CD Pipeline
+
+### 🚀 GitHub Actions Workflows
+
+The project includes automated CI/CD workflows:
+
+#### 1. **Build and Test** (`.github/workflows/build-test.yml`)
+- Triggers on: `push` to main/develop, `pull_request`
+- Steps:
+  - Restore dependencies
+  - Build in Release mode
+  - Run all unit tests
+  - Upload test results
+  - Publish code coverage
+
+#### 2. **Code Quality** (`.github/workflows/code-quality.yml`)
+- Triggers on: `push` to main/develop, `pull_request`
+- Steps:
+  - Static code analysis
+  - SonarCloud integration (optional)
+  - Code style checks
+
+#### 3. **Deploy to Production** (`.github/workflows/deploy-production.yml`)
+- Triggers on: `push` to main branch, version tags (v*)
+- Steps:
+  - Build and test
+  - Publish release artifacts
+  - Generate Docker image (optional)
+  - Upload build artifacts
+
+### 📋 Local CI/CD Simulation
+
+```bash
+# Build
+dotnet build --configuration Release
+
+# Run tests
+dotnet test --configuration Release
+
+# Publish
+dotnet publish -c Release -o ./release-output
+```
+
+---
+
 ## Roadmap
+
+### ✅ Completed Features
+
+- [x] 🔐 Authentication/Authorization (JWT)
+- [x] ✅ Input Validation (FluentValidation)
+- [x] ❤️ Health Checks
+- [x] 🏗️ Dependency Injection with Interface Abstraction
+- [x] 🧪 Comprehensive Unit Tests
+- [x] 🚀 CI/CD Pipeline
 
 ### 🎯 Future Enhancements
 
-- [ ] 🔐 Authentication/Authorization (JWT)
 - [ ] 🗄️ Database query optimization
 - [ ] 🔄 Distributed caching (Redis)
 - [ ] 🚦 Rate limiting
@@ -320,6 +426,9 @@ If the connection fails:
 - [ ] 🔍 Advanced filtering and sorting
 - [ ] 🌐 Internationalization (i18n)
 - [ ] 📱 GraphQL support
+- [ ] 🐳 Docker containerization
+- [ ] ☸️ Kubernetes deployment manifests
+- [ ] 📈 Prometheus metrics integration
 
 ### ⚠️ Known Issues
 
